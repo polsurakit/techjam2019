@@ -15,4 +15,11 @@ router.post('/distance', function(req, res, next) {
   }
 })
 
+router.put('/robot/:robotId/position', function(req, res, next) {
+  const robotId = req.params.robotId
+  const position = req.body.position
+  service.robot.setPosition(robotId, position)
+  res.status(204).end()
+})
+
 module.exports = router
