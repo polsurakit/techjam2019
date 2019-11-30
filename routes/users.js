@@ -94,6 +94,9 @@ router.post('/alien/:objectDna/report', function(req, res, next) {
   const robotId = req.body['robot_id'];
   console.log(objectDna, robotId, distance);
   try {
+    if (!objectDna || !distance || !robotId) {
+      res.status(400).send({ error: 'Missing required field'})
+    }
     service.alien.setPositionInfoByRobotId(objectDna, robotId, distance);
     res.status(200).end()
   } catch (e) {
