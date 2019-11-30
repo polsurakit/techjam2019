@@ -9,7 +9,7 @@ router.get('/', function(req, res, next) {
 router.post('/distance', function(req, res, next) {
   const { first_pos, second_pos, metric } = req.body
   try {
-    res.send(service.util.distance(first_pos, second_pos, metric))
+    res.send({ distance: service.util.distance(first_pos, second_pos, metric) })
   } catch (e) {
     res.status(400).send({ error: `Bad Request' ${e}` })
   }
@@ -33,11 +33,11 @@ router.put('/robot/:robotId/position', function(req, res, next) {
   res.status(204).end()
 })
 
-router.put('/nearest', function(req, res, next) {
+router.post('/nearest', function(req, res, next) {
   const { ref_position } = req.body
   const robots = service.robot.getAllRobots()
   try {
-    const robot_ids = await service.util.getNearestRobots(robots, ref_position)
+    const robot_ids = service.util.getNearestRobots(robots, ref_position)
     res.send({ robot_ids })
   } catch (e) {
     res.status(400).send({ error: e })
