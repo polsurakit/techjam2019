@@ -1,4 +1,4 @@
-FROM node:10
+FROM node:10.17-buster
 
 # Create app directory
 WORKDIR /usr/src/app
