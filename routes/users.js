@@ -1,7 +1,7 @@
 var express = require('express')
 var router = express.Router()
 const service = require('../service')
-const { isString } = require('lodash');
+const { isString, isNil } = require('lodash');
 /* GET users listing. */
 
 const robotRegEx = new RegExp("^robot#([1-9][0-9]*)$");
@@ -13,7 +13,8 @@ router.get('/', function(req, res, next) {
 })
 
 router.post('/distance', function(req, res, next) {
-  const { first_pos, second_pos, metric } = req.body
+  const { first_pos, second_pos, metric } = req.body;
+  if(!first_pos || !second_pos) res.status(400).send({error: "bad request: require first_pos and second_pos"});;
   try {
     let isOk = true;
     let p1 = first_pos;
