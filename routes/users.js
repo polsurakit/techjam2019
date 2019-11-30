@@ -32,8 +32,13 @@ router.post('/distance', function(req, res, next) {
 })
 
 router.get('/robot/:robotId/position', function(req, res, next) {
-  const robotId = req.params.robotId;
+  let robotId = req.params.robotId;
   try {
+    robotId = parseInt(robotId)
+    console.log(robotId)
+    if (!robotId || robotId < 1 || robotId > 999999) {
+      res.status(400).send({ error: 'Missing required field'})
+    }
     const pos = service.robot.getPosition("robot#"+robotId);
     if(pos === undefined) res.status(404).send({ error: `not found`});
     else res.send(pos);
