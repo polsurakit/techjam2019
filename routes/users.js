@@ -109,6 +109,9 @@ router.post('/alien/:objectDna/report', function(req, res, next) {
 router.get('/alien/:objectDna/position', function(req, res, next) {
   const objectDna = req.params.objectDna;
   try {
+    if (!objectDna) {
+      res.status(400).send({ error: 'Missing required field'})
+    }
     const result = service.alien.getPosition(objectDna);
     if(result) res.send(result);
     else res.status(424).end();
