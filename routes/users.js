@@ -67,6 +67,9 @@ router.put('/robot/:robotId/position', function(req, res, next) {
 router.post('/nearest', function(req, res, next) {
   const { ref_position, k } = req.body
   let newk = k;
+  if (!ref_position) {
+    res.status(400).send({ error: 'Missing required field'})
+  }
   if(k!=undefined){
     try {
       newk = parseInt(k);
