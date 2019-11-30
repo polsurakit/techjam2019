@@ -33,8 +33,13 @@ router.post('/distance', function(req, res, next) {
 })
 
 router.get('/robot/:robotId/position', function(req, res, next) {
-  const robotId = req.params.robotId;
+  let robotId = req.params.robotId;
   try {
+    robotId = parseInt(robotId)
+    console.log(robotId)
+    if (!robotId || robotId < 1 || robotId > 999999) {
+      res.status(400).send({ error: 'Missing required field'})
+    }
     const pos = service.robot.getPosition("robot#"+robotId);
     if(pos === undefined) res.status(404).send({ error: `not found`});
     else res.send(pos);
@@ -63,6 +68,9 @@ router.put('/robot/:robotId/position', function(req, res, next) {
 router.post('/nearest', function(req, res, next) {
   const { ref_position, k } = req.body
   let newk = k;
+  if (!ref_position) {
+    res.status(400).send({ error: 'Missing required field'})
+  }
   if(k!=undefined){
     try {
       newk = parseInt(k);
@@ -91,6 +99,9 @@ router.post('/alien/:objectDna/report', function(req, res, next) {
 
   console.log(objectDna, robotId, distance);
   try {
+    if (!objectDna || !distance || !robotId) {
+      res.status(400).send({ error: 'Missing required field'})
+    }
     service.alien.setPositionInfoByRobotId(objectDna, robotId, distance);
     res.status(200).end()
   } catch (e) {
@@ -105,6 +116,9 @@ router.get('/alien/:objectDna/position', function(req, res, next) {
   if(!isString(objectDna)) res.status(400).send({ error: e });
   if(!objectDna.match(alienRegEx)) res.status(400).send({ error: e });
   try {
+    if (!objectDna) {
+      res.status(400).send({ error: 'Missing required field'})
+    }
     const result = service.alien.getPosition(objectDna);
     if(result) res.send(result);
     else res.status(424).end();
