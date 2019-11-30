@@ -1,7 +1,7 @@
 const robotPosition = {}
 
 function setPosition(robotId, position) {
-  robotPosition["robot#"+robotId] = position;
+  robotPosition[robotId] = position;
   return position;
 }
 

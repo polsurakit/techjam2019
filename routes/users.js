@@ -29,7 +29,7 @@ router.get('/robot/:robotId/position', function(req, res, next) {
 router.put('/robot/:robotId/position', function(req, res, next) {
   const robotId = req.params.robotId
   const position = req.body.position
-  service.robot.setPosition(robotId, position)
+  service.robot.setPosition("robot#"+robotId, position)
   res.status(204).end()
 })
 
@@ -43,6 +43,13 @@ router.post('/nearest', function(req, res, next) {
     res.status(400).send({ error: e })
   }
 })
+router.post('/alien/:objectDna/report', function(req, res, next) {
+  const objectDna = req.params.objectDna;
+  const distance = req.body.distance;
+  const robotId = req.body['robot_id'];
+  service.alien.setPositionInfoByRobotId(objectDna, robotId, distance);
+  res.status(204).end()
+});
 
 router.get('/closestpair', function(req, res, next) {
   try {
