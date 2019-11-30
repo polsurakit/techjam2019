@@ -61,7 +61,22 @@ function formatId(robotId) {
   return parseInt(robotId.split("#")[1])
 }
 
+function formatPositionForLegacy(legacyPosition) {
+  const { south, north, west, east } = legacyPosition
+  if (!south && !north && !west && !east) {
+    return legacyPosition
+  } else {
+    let pos = {}
+    if (north) pos.y = north
+    if (south) pos.y = -south
+    if (west) pos.x = -west
+    if (east) pos.x = east
+    return pos
+  }
+}
+
 module.exports = {
   distance,
-  getKNearestRobots
+  getKNearestRobots,
+  formatPositionForLegacy
 }

@@ -13,8 +13,10 @@ router.get('/', function(req, res, next) {
 })
 
 router.post('/distance', function(req, res, next) {
-  const { first_pos, second_pos, metric } = req.body
+  let { first_pos, second_pos, metric } = req.body
   try {
+    first_pos = service.util.formatPositionForLegacy(first_pos)
+    second_pos = service.util.formatPositionForLegacy(second_pos)
     let isOk = true;
     let p1 = first_pos;
     let p2 = second_pos;
@@ -41,10 +43,11 @@ router.get('/robot/:robotId/position', function(req, res, next) {
 
 router.put('/robot/:robotId/position', function(req, res, next) {
   let robotId = req.params.robotId
-  const position = req.body.position
+  let position = req.body.position
   try {
     robotId = parseInt(robotId)
-    console.log(robotId)
+    position = service.util.formatPositionForLegacy(position)
+    console.log(position)
     if (!robotId || !position || robotId < 1 || robotId > 999999) {
       res.status(400).send({ error: 'Missing required field'})  
     }
