@@ -3,6 +3,7 @@ const fm = require('./fm')
 const util = require('./util')
 const robot = require('./robot')
 const alien = require('./alien')
+const closetPairHelper = require('./closetPairHelper')
 
 module.exports = {
   pol,
@@ -10,4 +11,5 @@ module.exports = {
   util,
   robot,
   alien,
+  closetPairHelper
 };
