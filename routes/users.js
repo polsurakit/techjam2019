@@ -52,10 +52,24 @@ router.post('/alien/:objectDna/report', function(req, res, next) {
     service.alien.setPositionInfoByRobotId(objectDna, robotId, distance);
     res.status(200).end()
   } catch (e) {
+    console.log(e);
     res.status(400).send({ error: e })
   }
 
 });
+
+router.get('/alien/:objectDna/position', function(req, res, next) {
+  const objectDna = req.params.objectDna;
+  try {
+    const result = service.alien.getPosition(objectDna);
+    if(result) res.send(result);
+    else res.status(424).end();
+
+  } catch (e) {
+    console.log(e);
+    res.status(400).send({ error: e })
+  }
+})
 
 router.get('/closestpair', function(req, res, next) {
   try {
@@ -69,6 +83,7 @@ router.get('/closestpair', function(req, res, next) {
       res.send({ distance })
     }
   } catch (e) {
+    console.log(e);
     res.status(400).send({ error: e })
   }
 })

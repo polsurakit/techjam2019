@@ -6,7 +6,7 @@ function setPosition(robotId, position) {
 }
 
 function getPosition(robotId) {
-  // console.log(robot
+  console.log('get robot pos');
   return robotPosition[robotId];
 }
 
