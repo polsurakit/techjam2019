@@ -47,12 +47,12 @@ router.put('/robot/:robotId/position', function(req, res, next) {
     robotId = parseInt(robotId)
     console.log(robotId)
     if (!robotId || !position || robotId < 1 || robotId > 999999) {
-      res.status(400).send({ error: 'Missing required field'})  
+      res.status(400).send({ error: 'Missing required field'})
     }
     service.robot.setPosition("robot#"+robotId, position)
     res.status(204).end()
   } catch (e) {
-    res.status(400).send({ error: 'Missing required field'})  
+    res.status(400).send({ error: 'Missing required field'})
   }
 })
 
