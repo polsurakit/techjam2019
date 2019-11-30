@@ -18,7 +18,9 @@ router.post('/distance', function(req, res, next) {
 router.get('/robot/:robotId/position', function(req, res, next) {
   const robotId = req.params.robotId;
   try {
-    res.send(service.robot.getPosition("robot#"+robotId));
+    const pos = service.robot.getPosition("robot#"+robotId);
+    if(pos === undefined) res.status(404).send({ error: `not found`});
+    else res.send(pos);
   } catch (e) {
     res.status(400).send({ error: `Bad Request ${e}` })
   }
