@@ -7,7 +7,8 @@ function setPosition(robotId, position) {
 }
 
 function getPosition(robotId) {
-  return robotPosition["robot#"+robotId];
+  // console.log(robot
+  return robotPosition[robotId];
 }
 
 module.exports = {

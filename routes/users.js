@@ -11,14 +11,14 @@ router.post('/distance', function(req, res, next) {
   try {
     res.send(service.util.distance(first_pos, second_pos, metric))
   } catch (e) {
-    res.status(400).send({ error: 'Bad Request' })
+    res.status(400).send({ error: `Bad Request' ${e}` })
   }
 })
 
 router.get('/robot/:robotId/position', function(req, res, next) {
   const robotId = req.params.robotId;
   try {
-    res.send(service.robot.getPosition(robotId));
+    res.send(service.robot.getPosition("robot#"+robotId));
   } catch (e) {
     res.status(400).send({ error: `Bad Request ${e}` })
   }
