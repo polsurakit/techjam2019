@@ -47,8 +47,14 @@ router.post('/alien/:objectDna/report', function(req, res, next) {
   const objectDna = req.params.objectDna;
   const distance = req.body.distance;
   const robotId = req.body['robot_id'];
-  service.alien.setPositionInfoByRobotId(objectDna, robotId, distance);
-  res.status(204).end()
+  console.log(objectDna, robotId, distance);
+  try {
+    service.alien.setPositionInfoByRobotId(objectDna, robotId, distance);
+    res.status(200).end()
+  } catch (e) {
+    res.status(400).send({ error: e })
+  }
+
 });
 
 router.get('/closestpair', function(req, res, next) {
