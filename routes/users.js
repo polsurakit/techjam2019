@@ -1,7 +1,13 @@
 var express = require('express')
 var router = express.Router()
 const service = require('../service')
+const { isString } = require('lodash');
 /* GET users listing. */
+
+const robotRegEx = new RegExp("^robot#([1-9][0-9]*)$");
+console.log(1,"robot#5".match(robotRegEx));
+console.log(2,"robot5".match(robotRegEx));
+
 router.get('/', function(req, res, next) {
   res.send('respond with a resource')
 })
@@ -9,9 +15,16 @@ router.get('/', function(req, res, next) {
 router.post('/distance', function(req, res, next) {
   const { first_pos, second_pos, metric } = req.body
   try {
-    res.send({ distance: service.util.distance(first_pos, second_pos, metric) })
+    let isOk = true;
+    let p1 = first_pos;
+    let p2 = second_pos;
+    if(isString(p1) && !p1.match(robotRegEx)) isOk = false;
+    if(isString(p2) && !p2.match(robotRegEx)) isOk = false;
+
+    if(isOk) res.send({ distance: service.util.distance(first_pos, second_pos, metric) });
+    else res.status(400).send({error: "bad request: not match regex"});
   } catch (e) {
-    res.status(400).send({ error: `Bad Request' ${e}` })
+    res.status(424).send({ error: `Insufficient data to compute the result: ${e}` })
   }
 })
 

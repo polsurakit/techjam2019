@@ -5,12 +5,14 @@ function distance(var1, var2, metric = undefined) {
   let p1 = var1;
   if( isString(var1)){
     p1 = robot.getPosition(var1);
+    if(!p1) throw Error("no data");
   }
   console.log('p1', p1);
 
   let p2 = var2;
   if( isString(var2)){
     p2 = robot.getPosition(var2);
+    if(!p2) throw Error("no data");
   }
   console.log('p2', p2);
 
