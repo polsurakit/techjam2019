@@ -41,10 +41,19 @@ router.get('/robot/:robotId/position', function(req, res, next) {
 })
 
 router.put('/robot/:robotId/position', function(req, res, next) {
-  const robotId = req.params.robotId
+  let robotId = req.params.robotId
   const position = req.body.position
-  service.robot.setPosition("robot#"+robotId, position)
-  res.status(204).end()
+  try {
+    robotId = parseInt(robotId)
+    console.log(robotId)
+    if (!robotId || !position || robotId < 1 || robotId > 999999) {
+      res.status(400).send({ error: 'Missing required field'})  
+    }
+    service.robot.setPosition("robot#"+robotId, position)
+    res.status(204).end()
+  } catch (e) {
+    res.status(400).send({ error: 'Missing required field'})  
+  }
 })
 
 router.post('/nearest', function(req, res, next) {
