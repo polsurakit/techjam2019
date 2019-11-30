@@ -23,6 +23,23 @@ function distance(var1, var2, metric = undefeined) {
   }
 }
 
+function getNearestRobots(robots, ref_position) {
+  let nearestRobot = undefined, nearestDis = undefined
+  robots.forEach(robot => {
+    if (nearestDis === undefined) {
+      nearestDis = distance(robot.position, ref_position)
+      nearestRobot = robot.robotId
+    } else if (nearestDis >= distance(robot.position, ref_position)) {
+      if (nearestDis !== distance(robot.position, ref_position) || robot.robotId < nearestRobot) {
+        nearestDis = distance(robot.position, ref_position)
+        nearestRobot = robot.robotId
+      }
+    }
+  })
+  return !!nearestRobot ? [nearestRobot] : []
+}
+
 module.exports = {
-  distance
+  distance,
+  getNearestRobots
 }

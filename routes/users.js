@@ -31,4 +31,15 @@ router.put('/robot/:robotId/position', function(req, res, next) {
   res.status(204).end()
 })
 
+router.put('/nearest', function(req, res, next) {
+  const { ref_position } = req.body
+  const robots = service.robot.getAllRobots()
+  try {
+    const robot_ids = await service.util.getNearestRobots(robots, ref_position)
+    res.send({ robot_ids })
+  } catch (e) {
+    res.status(400).send({ error: e })
+  }
+})
+
 module.exports = router
