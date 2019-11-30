@@ -23,6 +23,18 @@ function distance(var1, var2, metric = undefined) {
   }
 }
 
+function getKNearestRobots(robots, ref_position, k = 1) {
+  if (k == 1) return getNearestRobots(robots, ref_position)
+  const sortedRobots = robots.sort((a, b) => {
+    if (distance(a.position, ref_position) === distance(b.position, ref_position)) {
+      return formatId(a.robotId) - formatId(b.robotId)
+    } else {
+      return distance(a.position, ref_position) - distance(b.position, ref_position)
+    }
+  })
+  return sortedRobots.slice(0, k).map(robot=>formatId(robot.robotId))
+}
+
 function getNearestRobots(robots, ref_position) {
   let nearestRobot = undefined, nearestDis = undefined
   robots.forEach(robot => {
@@ -49,5 +61,5 @@ function formatId(robotId) {
 
 module.exports = {
   distance,
-  getNearestRobots
+  getKNearestRobots
 }

@@ -34,10 +34,10 @@ router.put('/robot/:robotId/position', function(req, res, next) {
 })
 
 router.post('/nearest', function(req, res, next) {
-  const { ref_position } = req.body
+  const { ref_position, k } = req.body
   const robots = service.robot.getAllRobots()
   try {
-    const robot_ids = service.util.getNearestRobots(robots, ref_position)
+    const robot_ids = service.util.getKNearestRobots(robots, ref_position, k)
     res.send({ robot_ids })
   } catch (e) {
     res.status(400).send({ error: e })
