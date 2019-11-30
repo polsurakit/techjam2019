@@ -15,6 +15,15 @@ router.post('/distance', function(req, res, next) {
   }
 })
 
+router.get('/robot/:robotId/position', function(req, res, next) {
+  const robotId = req.params.robotId;
+  try {
+    res.send(service.robot.getPosition(robotId));
+  } catch (e) {
+    res.status(400).send({ error: `Bad Request ${e}` })
+  }
+})
+
 router.put('/robot/:robotId/position', function(req, res, next) {
   const robotId = req.params.robotId
   const position = req.body.position
