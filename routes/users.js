@@ -42,6 +42,9 @@ router.get('/robot/:robotId/position', function(req, res, next) {
 router.put('/robot/:robotId/position', function(req, res, next) {
   const robotId = req.params.robotId
   const position = req.body.position
+  if (!robotId || !position) {
+    res.status(400).send({ error: 'Missing required field'})  
+  }
   service.robot.setPosition("robot#"+robotId, position)
   res.status(204).end()
 })
