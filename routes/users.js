@@ -58,9 +58,20 @@ router.put('/robot/:robotId/position', function(req, res, next) {
 
 router.post('/nearest', function(req, res, next) {
   const { ref_position, k } = req.body
+  let newk = k;
+  if(k!=undefined){
+    try {
+      newk = parseInt(k);
+      if(k < 1) {
+        res.status(400).send({ error: 'Missing required field'})
+      }
+    } catch (e) {
+      res.status(400).send({ error: 'Missing required field'})
+    }
+  }
   const robots = service.robot.getAllRobots()
   try {
-    const robot_ids = service.util.getKNearestRobots(robots, ref_position, k)
+    const robot_ids = service.util.getKNearestRobots(robots, ref_position, newk)
     res.send({ robot_ids })
   } catch (e) {
     res.status(400).send({ error: e })
