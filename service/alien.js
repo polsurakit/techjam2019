@@ -11,6 +11,7 @@ function setPosition(alienId, position) {
 }
 
 function setPositionInfo(alienId, distance, robotPos) {
+  conosle.log('setPositionInfo');
   if(size(alienPositionInfo[alienId]) == 0){
     alienPositionInfo[alienId] = [];
   }
@@ -28,6 +29,7 @@ function setPositionInfo(alienId, distance, robotPos) {
 }
 
 function setPositionInfoByRobotId(alienId, robotId, distance) {
+  console.log('setPositionInfoByRobotId');
   if(size(alienPositionInfo[alienId]) >= 3 || getPosition(alienId)) return;
   const robotPos = robot.getPosition("robot#"+robotId);
   if(distance == 0){
@@ -76,5 +78,5 @@ function getPosition(alientId) {
 module.exports = {
   setPosition,
   getPosition,
-  setPositionByRobotId,
+  setPositionInfoByRobotId,
 }
