@@ -44,4 +44,21 @@ router.post('/nearest', function(req, res, next) {
   }
 })
 
+router.get('/closestpair', function(req, res, next) {
+  try {
+    const robots = service.robot.getAllRobots()
+    const robotDistances = robots.map(({ position }) => position)
+    if (robotDistances.length <= 1) {
+      console.log('fm')
+      return res.status(424).end()
+    } else {
+      const distance = service.closetPairHelper.getNearestDistance(robotDistances)
+      res.send({ distance })
+    }
+  } catch (e) {
+    res.status(400).send({ error: e })
+  }
+})
+
+
 module.exports = router
