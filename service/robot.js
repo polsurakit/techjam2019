@@ -6,6 +6,10 @@ function setPosition(robotId, position) {
   return position;
 }
 
+function getPosition(robotId) {
+  return robotPosition[robotId];
+}
+
 module.exports = {
   setPosition,
 }
