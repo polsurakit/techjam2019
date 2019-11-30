@@ -5,8 +5,9 @@ const { isString, isNil } = require('lodash');
 /* GET users listing. */
 
 const robotRegEx = new RegExp("^robot#([1-9][0-9]*)$");
-console.log(1,"robot#5".match(robotRegEx));
-console.log(2,"robot5".match(robotRegEx));
+const alienRegEx = new RegExp("^[a-z]{16}$");
+// console.log(1,"robot#5".match(robotRegEx));
+// console.log(2,"robot5".match(robotRegEx));
 
 router.get('/', function(req, res, next) {
   res.send('respond with a resource')
@@ -84,6 +85,10 @@ router.post('/alien/:objectDna/report', function(req, res, next) {
   const objectDna = req.params.objectDna;
   const distance = req.body.distance;
   const robotId = req.body['robot_id'];
+  let isOk = true;
+  if(!isString(objectDna)) res.status(400).send({ error: e });
+  if(!objectDna.match(alienRegEx)) res.status(400).send({ error: e });
+
   console.log(objectDna, robotId, distance);
   try {
     service.alien.setPositionInfoByRobotId(objectDna, robotId, distance);
@@ -97,6 +102,8 @@ router.post('/alien/:objectDna/report', function(req, res, next) {
 
 router.get('/alien/:objectDna/position', function(req, res, next) {
   const objectDna = req.params.objectDna;
+  if(!isString(objectDna)) res.status(400).send({ error: e });
+  if(!objectDna.match(alienRegEx)) res.status(400).send({ error: e });
   try {
     const result = service.alien.getPosition(objectDna);
     if(result) res.send(result);
