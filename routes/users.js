@@ -99,6 +99,9 @@ router.post('/alien/:objectDna/report', function(req, res, next) {
 
   console.log(objectDna, robotId, distance);
   try {
+    if (distance === undefined) {
+      res.status(400).send({ error: 'Missing required field'})
+    }
     if (!objectDna  || !robotId) {
       console.log(objectDna  ,distance )
       res.status(400).send({ error: 'Missing required field'})
