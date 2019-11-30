@@ -1,7 +1,7 @@
 var express = require('express')
 var router = express.Router()
 const service = require('../service')
-const { isString } = require('lodash');
+const { isString, isNil } = require('lodash');
 /* GET users listing. */
 
 const robotRegEx = new RegExp("^robot#([1-9][0-9]*)$");
@@ -13,7 +13,8 @@ router.get('/', function(req, res, next) {
 })
 
 router.post('/distance', function(req, res, next) {
-  let { first_pos, second_pos, metric } = req.body
+  let { first_pos, second_pos, metric } = req.body;
+  if(!first_pos || !second_pos) res.status(400).send({error: "bad request: require first_pos and second_pos"});;
   try {
     first_pos = service.util.formatPositionForLegacy(first_pos)
     second_pos = service.util.formatPositionForLegacy(second_pos)
@@ -49,20 +50,31 @@ router.put('/robot/:robotId/position', function(req, res, next) {
     position = service.util.formatPositionForLegacy(position)
     console.log(position)
     if (!robotId || !position || robotId < 1 || robotId > 999999) {
-      res.status(400).send({ error: 'Missing required field'})  
+      res.status(400).send({ error: 'Missing required field'})
     }
     service.robot.setPosition("robot#"+robotId, position)
     res.status(204).end()
   } catch (e) {
-    res.status(400).send({ error: 'Missing required field'})  
+    res.status(400).send({ error: 'Missing required field'})
   }
 })
 
 router.post('/nearest', function(req, res, next) {
   const { ref_position, k } = req.body
+  let newk = k;
+  if(k!=undefined){
+    try {
+      newk = parseInt(k);
+      if(k < 1) {
+        res.status(400).send({ error: 'Missing required field'})
+      }
+    } catch (e) {
+      res.status(400).send({ error: 'Missing required field'})
+    }
+  }
   const robots = service.robot.getAllRobots()
   try {
-    const robot_ids = service.util.getKNearestRobots(robots, ref_position, k)
+    const robot_ids = service.util.getKNearestRobots(robots, ref_position, newk)
     res.send({ robot_ids })
   } catch (e) {
     res.status(400).send({ error: e })
