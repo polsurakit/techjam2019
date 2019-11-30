@@ -24,6 +24,7 @@ function distance(var1, var2, metric = undefined) {
 }
 
 function getKNearestRobots(robots, ref_position, k = 1) {
+  if (k == 1) return getNearestRobots(robots, ref_position)
   const sortedRobots = robots.sort((a, b) => {
     if (distance(a.position, ref_position) === distance(b.position, ref_position)) {
       return formatId(a.robotId) - formatId(b.robotId)
@@ -32,6 +33,24 @@ function getKNearestRobots(robots, ref_position, k = 1) {
     }
   })
   return sortedRobots.slice(0, k).map(robot=>formatId(robot.robotId))
+}
+
+function getNearestRobots(robots, ref_position) {
+  let nearestRobot = undefined, nearestDis = undefined
+  robots.forEach(robot => {
+    if (nearestDis === undefined) {
+      nearestDis = distance(robot.position, ref_position)
+      nearestRobot = formatId(robot.robotId)
+    } else if (nearestDis >= distance(robot.position, ref_position)) {
+      console.log(nearestRobot, nearestDis, formatId(robot.robotId), distance(robot.position, ref_position))
+      if (nearestDis !== distance(robot.position, ref_position) || formatId(robot.robotId) < nearestRobot) {
+        nearestDis = distance(robot.position, ref_position)
+        nearestRobot = formatId(robot.robotId)
+      }
+    }
+    console.log(distance(robot.position, ref_position))
+  })
+  return !!nearestRobot ? [nearestRobot] : []
 }
 
 function formatId(robotId) {
